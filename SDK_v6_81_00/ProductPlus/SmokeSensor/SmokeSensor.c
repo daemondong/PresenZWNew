@@ -548,8 +548,8 @@ BYTE ch;
 						break;
 										
 						case STATE_APP_LEARN_MODE:
-//							StartLearnModeNow(LEARN_MODE_DISABLE);
-//							ChangeState(STATE_APP_IDLE);
+							ZW_NetworkLearnModeStart(E_NETWORK_LEARN_MODE_DISABLE);
+							ChangeState(STATE_APP_IDLE);
 						break;
 					}
 				break;

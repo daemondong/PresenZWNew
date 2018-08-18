@@ -326,10 +326,10 @@ handleCommandClassConfiguration(
   ZW_APPLICATION_TX_BUFFER *pCmd, /* IN  Payload from the received frame */
   BYTE cmdLength);               /* IN Number of command bytes including the command */
 
-#define MYKEY01 0x35
-#define MYKEY02 0x34
-#define PINOUTNO   2
-BYTE PinOutList[PINOUTNO]={MYKEY01,MYKEY02};
+#define MYKEY01 0x10
+//#define MYKEY02 0x34
+//#define PINOUTNO   1
+BYTE PinOutList[PINOUTNO]={MYKEY01};
 //BYTE PinOutList[PINOUTNO]={ZDP03A_KEY_1,ZDP03A_KEY_2};
 #define LED_ON_TIME 100          //1000ms LED ON
 
@@ -407,12 +407,16 @@ ApplicationInitHW(SW_WAKEUP bWakeupReason)
 //  Led(ZDP03A_LED_D1,OFF);
 
   SetMyPinIn( MYKEY01, KEY01, FALSE);
-  SetMyPinIn( MYKEY02, KEY02, FALSE);
+//  SetMyPinIn( MYKEY02, KEY02, TRUE);
+  gpio_SetPinOut(0x35);
+  gpio_SetPin(0x35,OFF);
   gpio_SetPinOut(0x36);
   gpio_SetPin(0x36,OFF);
+  gpio_SetPinOut(0x37);
+  gpio_SetPin(0x37,OFF);
   gpio_SetPinOut(0x10);
   gpio_SetPin(0x10,OFF);
-  ledUse = 1;
+  ledUse = 5;
   LedLight=0;
   eventTime=0;
   
@@ -480,7 +484,7 @@ ApplicationInitSW(ZW_NVM_STATUS nvmStatus)
   InitNotification();
   AddNotification(
         &lifelineProfile,
-        NOTIFICATION_REPORT_WATER_V4,
+        NOTIFICATION_REPORT_SMOKE_V4,
         &suppportedEvents,
         TOTALEVENTS,
         FALSE,
@@ -506,6 +510,11 @@ ApplicationInitSW(ZW_NVM_STATUS nvmStatus)
   Transport_OnApplicationInitSW( &m_AppNIF);
   ZCB_eventSchedulerEventAdd(EVENT_APP_INIT);
 
+  while (ZW_UART0_tx_active_get());
+  ZW_UART0_tx_send_byte(0xAA);
+
+  debugWave(1,1,1,wakeupReason);
+
   //ZAF_pm_KeepAwake(ZAF_PM_LEARNMODE_TIMEOUT);
 
   return application_node_type;
@@ -528,10 +537,10 @@ BYTE ch;
     ZW_UART0_rx_int_clear(); // Clear flag right after detection
     ch = ZW_UART0_rx_data_get(); // Where ch is of the type BYTE
 	if (rcvNum<2) {
-		debugWave(2,ch,0,0);
+		debugWave(2,ch,rcvNum,0);
 		rcvData[rcvNum++]=ch;
 	}
-	else {
+	if (rcvNum>=2) {
 		rcvNum=0;
 		if (rcvData[1]==(~rcvData[0])) {
 			switch (rcvData[0]) {

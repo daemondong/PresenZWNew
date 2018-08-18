@@ -165,6 +165,9 @@ void Led_Toggle(BYTE ledUse)
 		case 2 : 
 			PIN_TOGGLE(P10);
 			break;
+		case 5 : 
+			PIN_TOGGLE(P37);
+			break;
 		case 10 : 
 			PIN_TOGGLE(P07);
 			break;
@@ -186,6 +189,9 @@ void Led_On(BYTE ledUse)
 		case 2 : 
 			PIN_ON(P10);
 			break;
+		case 5 : 
+			PIN_ON(P37);
+			break;
 		case 10 : 
 			PIN_ON(P07);
 			break;
@@ -206,6 +212,9 @@ void Led_Off(BYTE ledUse)
 		    break;
 		case 2 : 
 			PIN_OFF(P10);
+			break;
+		case 5 : 
+			PIN_OFF(P37);
 			break;
 		case 10 : 
 			PIN_OFF(P07);

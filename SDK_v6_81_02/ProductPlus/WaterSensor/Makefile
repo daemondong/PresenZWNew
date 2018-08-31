@@ -38,20 +38,20 @@
 #
 LIBRARY:=slave_routing
 #LIBRARY:=slave_enhanced_232
-FREQUENCY:=EU
+FREQUENCY:=US
 CODE_MEMORY_MODE:=banking
 SENSOR_TYPE:=BATTERY
 CHIP:=ZW050x
 WATCHDOG:=WATCHDOG_DISABLED
 
 # BOOT must be set to nonBOOT for a routing slave since there's no external NVM.
-ifeq ($(LIBRARY),slave_routing)
+#ifeq ($(LIBRARY),slave_routing)
  BOOTLOADER_ENABLED:=
  BOOT:=nonBOOT
-else
- BOOTLOADER_ENABLED:=1
- BOOT:=BOOTLOADER_ENABLED
-endif
+#else
+# BOOTLOADER_ENABLED:=1
+# BOOT:=BOOTLOADER_ENABLED
+#endif
 
 
 #---------------------------------------------------------------------------------------------------------
@@ -61,13 +61,13 @@ CHIPPACK:=ZW050x
 
 #---------------------------------------------------------------------------------------------------------
 # If not supplied by application here, the name of the application will be set equal to it's directory name.
-APP_NAME:=SensorPIR
+APP_NAME:=WaterSensor
 
 #---------------------------------------------------------------------------------------------------------
 # List of all application specific modules. General Framework modules are added in
 # make file "\ApplicationUtilities\Makefile.frameworkSupport".
 RELFILES:=\
- SensorPIR.obj\
+ WaterSensor.obj\
  eeprom.obj\
  ZW_nvr_app_api.obj\
  io.obj\
@@ -78,6 +78,7 @@ RELFILES:=\
  agi.obj\
  ZW_task.obj\
  ZW_util_queue.obj\
+ myUtil.obj\
  ev_man.obj\
  CommandClass.obj\
  CommandClassVersion.obj\

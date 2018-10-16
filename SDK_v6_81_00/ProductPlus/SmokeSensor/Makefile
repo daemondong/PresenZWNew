@@ -37,7 +37,7 @@
 #    > make help
 #
 LIBRARY:=slave_routing
-FREQUENCY:=EU
+FREQUENCY:=US
 CODE_MEMORY_MODE:=banking
 SENSOR_TYPE:=BATTERY
 CHIP:=ZW050x

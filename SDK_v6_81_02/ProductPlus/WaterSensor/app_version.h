@@ -7,7 +7,7 @@
 
 #include "zaf_version.h"
 
-#define APP_VERSION ZAF_VERSION_MAJOR
-#define APP_REVISION ZAF_VERSION_MINOR
+#define APP_VERSION 1
+#define APP_REVISION 0
 
 #endif /* PRODUCTPLUS_SENSORPIR_APP_VERSION_H_ */

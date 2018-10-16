@@ -283,9 +283,9 @@ static BOOL wakeupNotificationSend = FALSE;
  */
 static bTimerHandle_t eventJobsTimerHandle = 0xFF;
 
-#define TOTALEVENTS    2
+#define TOTALEVENTS    3
 //static BYTE suppportedEvents[TOTALEVENTS] = { NOTIFICATION_EVENT_HOME_SECURITY_NO_EVENT,NOTIFICATION_EVENT_HOME_SECURITY_INTRUSION_UNKNOWN_EV,NOTIFICATION_EVENT_HOME_SECURITY_TAMPERING_COVERING_REMOVED };
-static BYTE suppportedEvents[TOTALEVENTS] = { 0,0x02 };
+static BYTE suppportedEvents[TOTALEVENTS] = { 0,0x02,0x03 };
 
 // static BYTE suppportedEvents = NOTIFICATION_EVENT_HOME_SECURITY_MOTION_DETECTION_UNKNOWN_LOCATION;
 
@@ -424,6 +424,11 @@ ApplicationInitHW(SW_WAKEUP bWakeupReason)
   ZW_UART0_INT_ENABLE;
   rcvNum=0;
   sendNum=0;
+  
+  ledOnTimes=0;
+  ledFlickTimes=0;
+  Key5S=0;
+  KeyPress=0;
 
   InitBatteryMonitor(wakeupReason);
   Transport_OnApplicationInitHW(bWakeupReason);
@@ -489,13 +494,6 @@ ApplicationInitSW(ZW_NVM_STATUS nvmStatus)
         TOTALEVENTS,
         FALSE,
         0);
-  AddNotification(
-      &lifelineProfile,
-      NOTIFICATION_TYPE_HOME_SECURITY,
-      &suppportedEvents,
-      1,
-      FALSE,
-      0);
 
 #ifdef BOOTLOADER_ENABLED
   /* Initialize OTA module */
@@ -510,10 +508,10 @@ ApplicationInitSW(ZW_NVM_STATUS nvmStatus)
   Transport_OnApplicationInitSW( &m_AppNIF);
   ZCB_eventSchedulerEventAdd(EVENT_APP_INIT);
 
-  while (ZW_UART0_tx_active_get());
-  ZW_UART0_tx_send_byte(0xAA);
+//  while (ZW_UART0_tx_active_get());
+//  ZW_UART0_tx_send_byte(0xAA);
 
-  debugWave(1,1,1,wakeupReason);
+//  debugWave(1,1,1,wakeupReason);
 
   //ZAF_pm_KeepAwake(ZAF_PM_LEARNMODE_TIMEOUT);
 
@@ -537,7 +535,7 @@ BYTE ch;
     ZW_UART0_rx_int_clear(); // Clear flag right after detection
     ch = ZW_UART0_rx_data_get(); // Where ch is of the type BYTE
 	if (rcvNum<2) {
-		debugWave(2,ch,rcvNum,0);
+//		debugWave(2,ch,rcvNum,0);
 		rcvData[rcvNum++]=ch;
 	}
 	if (rcvNum>=2) {
@@ -577,6 +575,18 @@ BYTE ch;
 				
 				case 0xA9:		// clear fire alarm
 					basicValue = 0x0; myEvent = 0;
+					MemoryPutByte((WORD)&EEOFFSET_basicValue_far, basicValue);
+//		debugWave(port,chgval,nowval,0);
+					ChangeState(STATE_APP_TRANSMIT_DATA);
+	
+					ZCB_EventSchedulerEventAdd(EVENT_APP_NEXT_EVENT_JOB);
+					//Add event's on job-queue
+					ZCB_EventEnqueue(EVENT_APP_BASIC_START_JOB);
+					ZCB_EventEnqueue(EVENT_APP_NOTIFICATION_START_JOB);
+				break;
+				
+				case 0xC1:		// test fire alarm
+					basicValue = 0x0; myEvent = 2;
 					MemoryPutByte((WORD)&EEOFFSET_basicValue_far, basicValue);
 //		debugWave(port,chgval,nowval,0);
 					ChangeState(STATE_APP_TRANSMIT_DATA);
@@ -1137,7 +1147,7 @@ AppStateManager(EVENT_APP event)
       {
         ZW_DEBUG_SENSORPIR_SEND_STR("\r\nEVENT_APP_NOTIFICATION_START_JOB");
         NotificationEventTrigger(&lifelineProfile,
-            NOTIFICATION_REPORT_WATER_V4,
+            NOTIFICATION_REPORT_SMOKE_V4,
             suppportedEvents[myEvent],
             NULL, 0,
             ENDPOINT_ROOT);
@@ -1152,7 +1162,7 @@ AppStateManager(EVENT_APP event)
       {
         ZW_DEBUG_SENSORPIR_SEND_STR("\r\nEVENT_APP_NOTIFICATION_STOP_JOB");
         NotificationEventTrigger(&lifelineProfile,
-            NOTIFICATION_REPORT_WATER_V4,
+            NOTIFICATION_REPORT_SMOKE_V4,
             0,
             &suppportedEvents, 1,
             ENDPOINT_ROOT);

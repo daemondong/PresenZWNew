@@ -37,17 +37,17 @@
 #    > make help
 #
 LIBRARY:=slave_enhanced_232
-#FREQUENCY:=EU
+FREQUENCY:=EU
 CODE_MEMORY_MODE:=banking
 SENSOR_TYPE:=BATTERY
 CHIP:=ZW050x
 WATCHDOG:=WATCHDOG_DISABLED
 BOOT:=BOOTLOADER_ENABLED
 # Adding test interface to framework
-TEST_INTERFACE:=YES
+TEST_INTERFACE:=NO
 
 # Force the build with Client-Side Authentication or Server-Side Authentication.
-#AUTH_TYPE:=CSA
+AUTH_TYPE:=CSA
 
 #---------------------------------------------------------------------------------------------------------
 

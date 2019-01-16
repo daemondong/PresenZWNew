@@ -720,7 +720,12 @@ static BOOL ApplicationIdle(void)
       }
     }
   }
-
+	
+  if (status) {
+	gpio_SetPinIn(0x34, FALSE);
+	gpio_SetPinIn(0x35, FALSE);
+	gpio_SetPinIn(0x36, FALSE);
+  }
   if (ledOnTimes>0 || ledFlickTimes>0 || Key5S>0 || KeyPress>0) 
 	  status = FALSE;
 
@@ -1181,11 +1186,23 @@ AppStateManager(EVENT_APP event)
 
       if (EVENT_APP_BATTERY_LOW_TX == event)
       {
-        if (JOB_STATUS_SUCCESS != SendBattReport(ZCB_BattReportSentDone))
-        {
-          ActivateBattNotificationTrigger();
-          ZCB_eventSchedulerEventAdd(EVENT_APP_NEXT_EVENT_JOB);
-        }
+        BYTE tmpV;
+		
+		tmpV = MemoryGetByte((WORD)&EE_TRANSFAIL_far);
+		if (tmpV==0 || tmpV>=10) {
+			if (JOB_STATUS_SUCCESS != SendBattReport(ZCB_BattReportSentDone))
+			{
+				MemoryPutByte((WORD)&EE_TRANSFAIL_far, 0);
+				ActivateBattNotificationTrigger();
+				ZCB_eventSchedulerEventAdd(EVENT_APP_NEXT_EVENT_JOB);
+			}
+			else   MemoryPutByte((WORD)&EE_TRANSFAIL_far, 1);
+		}
+		else {
+			MemoryPutByte((WORD)&EE_TRANSFAIL_far, tmpV+1);
+			ActivateBattNotificationTrigger();
+			ZCB_eventSchedulerEventAdd(EVENT_APP_NEXT_EVENT_JOB);
+		}
       }
 
       if (EVENT_APP_WAKE_UP_NOTIFICATION_TX == event)
@@ -1363,6 +1380,8 @@ SetDefaultConfiguration(void)
   MemoryPutByte((WORD)&EEOFFSET_MAGIC_far, APPL_MAGIC_VALUE);
   MemoryPutByte((WORD)&EEOFFSET_basicValue_far, 0);
   MemoryPutByte((WORD)&EE_LEDENABLE_far, 1);
+  MemoryPutByte((WORD)&EE_TRANSFAIL_far, 0);
+  
   for (i=0;i<4;i++) MemoryPutByte((WORD)&EEOFFSET_PortOldValue[i],0);
   CmdClassWakeUpNotificationMemorySetDefault();
   ActivateBattNotificationTrigger();

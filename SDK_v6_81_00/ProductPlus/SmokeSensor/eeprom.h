@@ -84,6 +84,7 @@ extern BYTE far EEOFFSET_MAGIC_far;
 extern BYTE far EEOFFSET_basicValue_far;
 extern BYTE far EEOFFSET_PortOldValue[4];
 extern BYTE far EE_LEDENABLE_far;
+extern BYTE far EE_TRANSFAIL_far;
 
 extern t_nvmModuleDescriptor far nvmApplicationDescriptor;
 

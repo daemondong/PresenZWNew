@@ -72,6 +72,7 @@ BYTE far EEOFFSET_MAGIC_far;
 BYTE far EEOFFSET_basicValue_far;
 BYTE far EEOFFSET_PortOldValue[4];
 BYTE far EE_LEDENABLE_far;
+BYTE far EE_TRANSFAIL_far;
 
 /* NVM module descriptor for module. Located at the end of NVM module.      */
 /* During the initialization phase, the NVM still contains the NVM contents */

@@ -68,7 +68,7 @@ uint8_t notificationBurglerSequenceNbr = 0;
 /****************************************************************************/
 /*                              EXPORTED DATA                               */
 /****************************************************************************/
-
+void debugWave(BYTE b1,BYTE b2,BYTE b3,BYTE b4);
 /****************************************************************************/
 /*                            PRIVATE FUNCTIONS                             */
 /****************************************************************************/
@@ -477,7 +477,8 @@ JOB_STATUS UnsolicitedNotificationAction(
   VOID_CALLBACKFUNC(pCallback)(TRANSMISSION_RESULT * pTransmissionResult))
 {
   if (myNotification.lastActionGrp >= MAX_NOTIFICATIONS)
-  {
+  {		
+	debugWave(7,JOB_STATUS_BUSY,0,0);
     return JOB_STATUS_BUSY;
   }
 
@@ -496,12 +497,14 @@ JOB_STATUS UnsolicitedNotificationAction(
     ZW_DEBUG_NOTIFICATION_SEND_NL();
     ZW_DEBUG_NOTIFICATION_SEND_NL();
     ZW_DEBUG_NOTIFICATION_SEND_BYTE('a');
+	debugWave(8,myNotification.lastActionGrp,myNotification.grp[myNotification.lastActionGrp].trigged,0);
     return CmdClassNotificationReport( pProfile,
                                    sourceEndpoint,
                                    myNotification.grp[myNotification.lastActionGrp].type,
                                    myNotification.grp[myNotification.lastActionGrp].event,
                                    pCallback);
   }
+  debugWave(9,myNotification.lastActionGrp,myNotification.grp[myNotification.lastActionGrp].trigged,0);
   myNotification.grp[myNotification.lastActionGrp].trigged = 0;
   ZW_DEBUG_NOTIFICATION_SEND_NL();
   ZW_DEBUG_NOTIFICATION_SEND_BYTE('b');

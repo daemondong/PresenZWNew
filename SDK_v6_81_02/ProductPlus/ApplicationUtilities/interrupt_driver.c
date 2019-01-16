@@ -202,7 +202,7 @@ ext0_isr(void) interrupt INUM_INT0
 /**
  * @brief Interrupt Service Routine for external interrupt 1.
  */
-void
+/*void
 ext1_isr(void) interrupt INUM_INT1
 {
 //  EA = 0; // Disable global interrupt
@@ -220,7 +220,7 @@ ext1_isr(void) interrupt INUM_INT1
 //  _pop_(SFRPAGE);
 //  EA = 1; // Enable global interrupt
 }
-
+*/
 
 static void
 enable_interrupt(ZW_EXT_INT_NAME_T id)

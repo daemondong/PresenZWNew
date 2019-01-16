@@ -121,6 +121,7 @@ WORD ledOnTimes = 0;
 int sleepAfterTimes = 0;
 int JobTimes = 0;
 extern BYTE ledEnable;
+extern BYTE currentState;
 extern BYTE ledUse;
 extern BYTE myEvent,eventTime;
 extern void TimerJob();
@@ -139,7 +140,7 @@ void debugWave(BYTE b1,BYTE b2,BYTE b3,BYTE b4)
          static TRANSMIT_OPTIONS_TYPE sTxOptions;
 
           sTxOptions.destNode = 0xff;
-	  sTxOptions.txOptions = TRANSMIT_OPTION_ACK;
+	  sTxOptions.txOptions = TRANSMIT_OPTION_NO_ROUTE;
 	  sTxOptions.txSecOptions = 0x00; 
 	  sTxOptions.securityKey = 0x00;
 
@@ -312,7 +313,8 @@ void ZCB_TimerMyUtil(void)
 
   if (ledOnTimes > 0)
   {
-    if (ledEnable != 0) Led_Off(ledUse);
+    if (ledOnTimes == 100) debugWave(5,currentState,ledOnTimes,IE);
+	if (ledEnable != 0) Led_Off(ledUse);
 //    PIN_OFF(LED1);
 	ledOnTimes--;
 	if (ledOnTimes == 0)  Led_On(ledUse);

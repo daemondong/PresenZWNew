@@ -117,6 +117,9 @@ typedef enum _EVENT_APP_
   EVENT_APP_FINISH_EVENT_JOB,
   EVENT_APP_BATTERY_LOW_TX,
   EVENT_APP_BATTERY_UART_GET,
+  EVENT_APP_IN_AND_EXCLUDE,
+  EVENT_APP_RESET,
+  EVENT_APP_NOTI,
   EVENT_APP_IS_POWERING_DOWN,
   EVENT_APP_BASIC_STOP_JOB,
   EVENT_APP_BASIC_START_JOB,
@@ -142,6 +145,9 @@ typedef enum _STATE_APP_
   STATE_APP_TRANSMIT_DATA,
   STATE_APP_POWERDOWN,
   STATE_APP_UART_DATA_WAIT,
+  STATE_APP_UART_DATA_GET,
+  STATE_APP_EXT_INT_WAIT,
+  STATE_APP_WAIT_8SEC,
   STATE_APP_BASIC_SET_TIMEOUT_WAIT
 }
 STATE_APP;
@@ -307,8 +313,10 @@ BYTE rcvData[15],sendData[15];
 BYTE ledEnable,LedLight;
 BYTE ledUse;
 BYTE LastEvent;
+BYTE LastState=0xFF;
 extern int JobTimes;
-static BYTE GetUartBatt=0;
+static BYTE Power_ON=0;
+static BYTE ExtInt_Once=0;
 WORD BattLevel;
 
 BYTE Key5S,KeyPress;
@@ -343,12 +351,51 @@ BOOL ZCB_OTAStart();
 
 void ZCB_EventJobsTimer(void);
 
+BYTE PowerSatus=0;
+BYTE TransSec=0;
+BYTE ForceDown=0;
 void	TimerJob()
 {
-	BattLevel= 5;
+//	BattLevel= 99;
+//	GetUartBatt=0;
+	switch (currentState) {
+		case STATE_APP_WAIT_8SEC:
+			ZAF_jobEnqueue(EVENT_APP_BATTERY_UART_GET);
+//			ChangeState(STATE_APP_TRANSMIT_DATA);
+		break;
+		case STATE_APP_UART_DATA_WAIT:
+			BattLevel= 75;
+			MemoryPutByte((WORD)&EEOFFSET_Batt_Level, BattLevel & 0xFF);
+			if (Power_ON==1) ZAF_jobEnqueue(EVENT_APP_BATTERY_LOW_TX);
+			else ZAF_jobEnqueue(EVENT_APP_WAKE_UP_NOTIFICATION_TX);
+		break;
+		case STATE_APP_EXT_INT_WAIT:
+			ForceDown=1;
+		break;
+	}
 	ChangeState(STATE_APP_IDLE);
 }
-
+void TestTimerJob(void)
+{
+	while (ZW_UART0_tx_active_get());
+	ZW_UART0_tx_send_byte(myNodeID);
+	while (ZW_UART0_tx_active_get());
+	ZW_UART0_tx_send_byte(TransSec);
+	while (ZW_UART0_tx_active_get());
+	ZW_UART0_tx_send_byte(wakeupReason);
+	while (ZW_UART0_tx_active_get());
+	ZW_UART0_tx_send_byte(currentState);
+	while (ZW_UART0_tx_active_get());
+	
+	if (currentState==STATE_APP_TRANSMIT_DATA || currentState==STATE_APP_IDLE) {
+		TransSec++;
+		if (TransSec>=2) {
+			ChangeState(STATE_APP_IDLE);
+			ForceDown=1;
+		}
+	}
+	else TransSec=0;
+}
 
 void ZCB_5SHold(void)
 {
@@ -387,13 +434,10 @@ ApplicationInitHW(SW_WAKEUP bWakeupReason)
   ZW_UART0_INT_ENABLE;
   rcvNum=0;
   sendNum=0;
-  while (ZW_UART0_tx_active_get());
-  ZW_UART0_tx_send_byte(0xAA);
-  while (ZW_UART0_tx_active_get());
-  ZW_UART0_tx_send_byte(bWakeupReason);
  
   InitBatteryMonitor(wakeupReason);
   Transport_OnApplicationInitHW(bWakeupReason);
+  initMyUtil();
   return(TRUE);
 }
 
@@ -419,6 +463,10 @@ ApplicationInitSW(ZW_NVM_STATUS nvmStatus)
 #ifdef WATCHDOG_ENABLED
   ZW_WatchDogEnable();
 #endif
+  while (ZW_UART0_tx_active_get());
+  ZW_UART0_tx_send_byte(0xAA);
+  while (ZW_UART0_tx_active_get());
+  ZW_UART0_tx_send_byte(wakeupReason);
   ZAF_eventSchedulerInit(AppStateManager);
 
   /*Check battery level*/
@@ -440,7 +488,6 @@ ApplicationInitSW(ZW_NVM_STATUS nvmStatus)
   LoadConfiguration();
   ZAF_pm_Init(wakeupReason);
 
-  initMyUtil();
   /* Setup AGI group lists*/
   AGI_Init();
   AGI_LifeLineGroupSetup(agiTableLifeLine, (sizeof(agiTableLifeLine)/sizeof(CMD_CLASS_GRP)), GroupName, ENDPOINT_ROOT );
@@ -499,7 +546,7 @@ BYTE ch;
 		if (rcvData[1]==(~rcvData[0])) {
 			switch (rcvData[0]) {
 				case 0x1A:      // Press button 3 for include & exclude
-					ZCB_eventSchedulerEventAdd(EVENT_KEY_B1_DOWN);
+					ZCB_eventSchedulerEventAdd(EVENT_APP_IN_AND_EXCLUDE);
 				break;
 				
 				case 0x55:		// fire alarm
@@ -521,7 +568,7 @@ BYTE ch;
 				break;
 				
 				case 0x5A:		// Reset
-					ZCB_eventSchedulerEventAdd(EVENT_KEY_B1_HELD_10_SEC);
+					ZCB_eventSchedulerEventAdd(EVENT_APP_RESET);
 				break;
 			}
 			while (ZW_UART0_tx_active_get());
@@ -540,62 +587,58 @@ BYTE ch;
 		BYTE i,v;
 		
 		rcvNum=0;
+		JobTimes=0;
 		for (i=4,v=0;i<9;i++) {
 			v ^= rcvData[i];
 		}
 		if (v==rcvData[9]) {
 			switch (rcvData[5]) {
 				case 0xA5:      // Press button 3 for include & exclude
-					ZCB_eventSchedulerEventAdd(EVENT_KEY_B1_DOWN);
+					ZCB_eventSchedulerEventAdd(EVENT_APP_IN_AND_EXCLUDE);
 				break;
 				
 				case 0xA6:		// Reset
-					ZCB_eventSchedulerEventAdd(EVENT_KEY_B1_HELD_10_SEC);
+					ZCB_eventSchedulerEventAdd(EVENT_APP_RESET);
 				break;
 
 				case 0xAA:		// Batt
 					BattLevel= ((WORD)(rcvData[6]<<8))|rcvData[7];
-					JobTimes=0;
-					ChangeState(STATE_APP_IDLE);
+					if (BattLevel==0) BattLevel=79;
+					MemoryPutByte((WORD)&EEOFFSET_Batt_Level, BattLevel & 0xFF);
+					if (Power_ON==1) ZAF_jobEnqueue(EVENT_APP_BATTERY_LOW_TX);
+					else ZAF_jobEnqueue(EVENT_APP_WAKE_UP_NOTIFICATION_TX);
 				break;
 
 				case 0xA1:		// alarm
 					if ((rcvData[6] & 0x80)>0) myEvent = 1;
 					else if ((rcvData[7] & 0x20)>0) myEvent = 2;
 					else myEvent = 0;
-					if (LastEvent!=myEvent) {
-						LastEvent=myEvent;
-						MemoryPutByte((WORD)&EEOFFSET_Last_Event, LastEvent);
-						ZAF_jobEnqueue(EVENT_APP_NOTIFICATION_START_JOB);
-					}
-					ZCB_eventSchedulerEventAdd(EVENT_APP_NEXT_EVENT_JOB);
-				break;
-				
-				default:
-					ZCB_eventSchedulerEventAdd(EVENT_APP_NEXT_EVENT_JOB);
+					ZCB_eventSchedulerEventAdd(EVENT_APP_NOTI);
 				break;
 			}
-			for (i=0;i<4;i++) {
-				while (ZW_UART0_tx_active_get());
-				ZW_UART0_tx_send_byte(rcvData[i]);
-			}
-			if (rcvData[5]==0xA1) {
-				while (ZW_UART0_tx_active_get());
-				ZW_UART0_tx_send_byte(0x01);
-				while (ZW_UART0_tx_active_get());
-				ZW_UART0_tx_send_byte(0xA1);
-				while (ZW_UART0_tx_active_get());
-				ZW_UART0_tx_send_byte(0xA0);
-			}
-			else {
-				for (i=4;i<10;i++) {
+			ChangeState(STATE_APP_IDLE);
+			if (rcvData[5]<0xA7 || rcvData[5]>0xAA) {          //主动上传才需回码
+				for (i=0;i<4;i++) {
 					while (ZW_UART0_tx_active_get());
 					ZW_UART0_tx_send_byte(rcvData[i]);
 				}
+				if (rcvData[5]==0xA1) {
+					while (ZW_UART0_tx_active_get());
+					ZW_UART0_tx_send_byte(0x01);
+					while (ZW_UART0_tx_active_get());
+					ZW_UART0_tx_send_byte(0xA1);
+					while (ZW_UART0_tx_active_get());
+					ZW_UART0_tx_send_byte(0xA0);
+				}
+				else {
+					for (i=4;i<10;i++) {
+						while (ZW_UART0_tx_active_get());
+						ZW_UART0_tx_send_byte(rcvData[i]);
+					}
+				}
 			}
-			while (ZW_UART0_tx_active_get());
-			ZW_UART0_tx_send_byte(currentState);
 		} 
+//	ChangeState(STATE_APP_UART_DATA_GET);
 	}
 #endif
   }
@@ -604,12 +647,20 @@ BYTE ch;
 /**
  * @brief See description for function prototype in ZW_basis_api.h.
  */
-E_APPLICATION_STATE ApplicationPoll(E_PROTOCOL_STATE bProtocolState)
+#ifdef ZW_SMARTSTART_ENABLED
+E_APPLICATION_STATE          /*RET Application active state - if TRUE, ready to powerdown */
+ApplicationPoll(
+  E_PROTOCOL_STATE bProtocolState) /* IN Protocol current state - If FALSE, ready to shutdown */
+#else
+void       /*RET Nothing */
+ApplicationPoll(
+  void)          /* IN Nothing */
+#endif
 {
   BOOL poweroff = ApplicationIdle();
 
 #ifdef WATCHDOG_ENABLED
-  ZW_WatchDogKick();
+  if (ForceDown==0)  ZW_WatchDogKick();
 #endif
 
 // TODO: enable line below and remove debug
@@ -631,7 +682,7 @@ static BOOL ApplicationIdle(void)
 {
   BOOL status = FALSE;
 
-  if (STATE_APP_POWERDOWN == GetAppState()) //low battery
+  if (STATE_APP_POWERDOWN == GetAppState() || ForceDown == 1) //low battery
   {
     status = TRUE;
   }
@@ -666,16 +717,18 @@ static BOOL ApplicationIdle(void)
        * commands if it has any. Hence, we need to be done with everything else before these commands
        * arrive.
        */
-      if ((SW_WAKEUP_EXT_INT != wakeupReason) && (TRUE == TimeToSendBattReport()))
+      if ((SW_WAKEUP_EXT_INT != wakeupReason) && (TRUE == TimeToSendBattReport()) && changeState == FALSE)
       {
         ZW_DEBUG_SENSORPIR_SEND_BYTE('B');
         /*Add event's on job-queue*/
 #ifdef UART_BATT
-		if (GetUartBatt==0) {
-			GetUartBatt=1;
-			ZAF_jobEnqueue(EVENT_APP_BATTERY_UART_GET);
+		if (SW_WAKEUP_POR == wakeupReason && Power_ON==0) {
+			Power_ON=1;
+			ChangeState(STATE_APP_WAIT_8SEC);
+			JobTimes=900;
 		}
 		else {
+			BattLevel=MemoryGetByte((WORD)&EEOFFSET_Batt_Level);
 			ZAF_jobEnqueue(EVENT_APP_BATTERY_LOW_TX);
 		}
 #else
@@ -689,15 +742,18 @@ static BOOL ApplicationIdle(void)
       {
         ZW_DEBUG_SENSORPIR_SEND_BYTE('W');
         wakeupNotificationSend = TRUE;
-        ZAF_jobEnqueue(EVENT_APP_WAKE_UP_NOTIFICATION_TX);
+		ZAF_jobEnqueue(EVENT_APP_BATTERY_UART_GET);
+//        ZAF_jobEnqueue(EVENT_APP_WAKE_UP_NOTIFICATION_TX);
         changeState = TRUE;
       }
 
       if (TRUE == changeState)
       {
         ZW_DEBUG_SENSORPIR_SEND_BYTE('T');
-        ZCB_eventSchedulerEventAdd(EVENT_APP_NEXT_EVENT_JOB);
-        ChangeState(STATE_APP_TRANSMIT_DATA);
+		if (currentState != STATE_APP_WAIT_8SEC) {
+			ZCB_eventSchedulerEventAdd(EVENT_APP_NEXT_EVENT_JOB);
+			ChangeState(STATE_APP_TRANSMIT_DATA);
+		}
       }
       else
       {
@@ -712,9 +768,16 @@ static BOOL ApplicationIdle(void)
         {
           status = TRUE;
         }
+		
+		if (SW_WAKEUP_EXT_INT == wakeupReason && ExtInt_Once==0) {
+			ExtInt_Once=1;
+			ChangeState(STATE_APP_EXT_INT_WAIT);
+			JobTimes=100;
+		}
       }
     }
   }
+  PowerSatus=status;
   return status;
 }
 
@@ -913,7 +976,7 @@ void ApplicationNetworkLearnModeCompleted(uint8_t bNodeID)
   {
     if (APPLICATION_NETWORK_LEARN_MODE_COMPLETED_FAILED == bNodeID)
     {
-      MemoryPutByte((WORD)&EEOFFSET_MAGIC_far, APPL_MAGIC_VALUE + 1);
+//      MemoryPutByte((WORD)&EEOFFSET_MAGIC_far, APPL_MAGIC_VALUE + 1);
       ZCB_eventSchedulerEventAdd((EVENT_APP) EVENT_SYSTEM_WATCHDOG_RESET);
     }
     else
@@ -933,7 +996,7 @@ void ApplicationNetworkLearnModeCompleted(uint8_t bNodeID)
         myNodeID = bNodeID;
         if (0 == myNodeID)
         {
-          MemoryPutByte((WORD)&EEOFFSET_MAGIC_far, APPL_MAGIC_VALUE + 1);
+//          MemoryPutByte((WORD)&EEOFFSET_MAGIC_far, APPL_MAGIC_VALUE + 1);
           ZCB_eventSchedulerEventAdd((EVENT_APP) EVENT_SYSTEM_WATCHDOG_RESET);
         }
         else
@@ -1000,7 +1063,7 @@ AppStateManager(EVENT_APP event)
 
     case STATE_APP_STARTUP:
 
-      if (EVENT_APP_INIT == event)
+      if (EVENT_APP_INIT == event && myNodeID == 0)
       {
         ZW_DEBUG_SENSORPIR_SEND_STR("LEARN_MODE_INCLUSION_SMARTSTART");
         ZW_NetworkLearnModeStart(E_NETWORK_LEARN_MODE_INCLUSION_SMARTSTART);
@@ -1009,6 +1072,8 @@ AppStateManager(EVENT_APP event)
       ChangeState(STATE_APP_IDLE);
       break;
 
+	case STATE_APP_UART_DATA_GET:
+		ChangeState(STATE_APP_IDLE);
     case STATE_APP_IDLE:
       if(EVENT_APP_REFRESH_MMI == event)
       {
@@ -1020,7 +1085,7 @@ AppStateManager(EVENT_APP event)
         ChangeState(STATE_APP_LEARN_MODE);
       }
 
-      if((EVENT_KEY_B1_DOWN == event) ||(EVENT_SYSTEM_LEARNMODE_START == event))
+      if((EVENT_APP_IN_AND_EXCLUDE == event) ||(EVENT_SYSTEM_LEARNMODE_START == event))
       {
         if (myNodeID)
         {
@@ -1035,7 +1100,7 @@ AppStateManager(EVENT_APP event)
         ChangeState(STATE_APP_LEARN_MODE);
       }
 
-      if ((EVENT_KEY_B1_HELD_10_SEC == event) || (EVENT_SYSTEM_RESET == event))
+      if ((EVENT_APP_RESET == event))
       {
         /*
          * Since this application is a routing slave, it'll use the internal NVM also known as the
@@ -1047,13 +1112,13 @@ AppStateManager(EVENT_APP event)
         ZAF_pm_KeepAwake(ZAF_PM_HALF_SECOND);
       }
 
-      if(EVENT_KEY_B2_DOWN == event)
+      if(EVENT_APP_NOTI == event)
       {
         ZW_DEBUG_SENSORPIR_SEND_STR("\r\nEVENT_KEY_B2_DOWN\r\n");
         /*Add event's on job-queue*/
-        ZAF_jobEnqueue(EVENT_APP_BASIC_START_JOB);
+//        ZAF_jobEnqueue(EVENT_APP_BASIC_START_JOB);
         ZAF_jobEnqueue(EVENT_APP_NOTIFICATION_START_JOB);
-        ZAF_jobEnqueue(EVENT_APP_START_TIMER_EVENTJOB_STOP);
+//        ZAF_jobEnqueue(EVENT_APP_START_TIMER_EVENTJOB_STOP);
       }
 
       if(EVENT_SYSTEM_OTA_START == event)
@@ -1068,7 +1133,7 @@ AppStateManager(EVENT_APP event)
         Led(ZDP03A_LED_D1,ON);
       }
 
-      if((EVENT_KEY_B1_DOWN == event)||(EVENT_SYSTEM_LEARNMODE_END == event))
+      if((EVENT_APP_IN_AND_EXCLUDE == event)||(EVENT_SYSTEM_LEARNMODE_END == event))
       {
         ZW_NetworkLearnModeStart(E_NETWORK_LEARN_MODE_DISABLE);
         ZCB_eventSchedulerEventAdd(EVENT_APP_INIT);
@@ -1100,19 +1165,16 @@ AppStateManager(EVENT_APP event)
       /* Device is powering down.. wait!*/
       break;
 	  
-	case STATE_APP_UART_DATA_WAIT:
-	  break;
-
     case STATE_APP_TRANSMIT_DATA:
 
-      if(EVENT_KEY_B2_DOWN == event)
+/*      if(EVENT_KEY_B2_DOWN == event)
       {
         if (0xFF != eventJobsTimerHandle)
         {
           ZW_TimerLongRestart(eventJobsTimerHandle);
         }
       }
-
+*/
       if(EVENT_APP_NEXT_EVENT_JOB == event)
       {
         BYTE event;
@@ -1129,6 +1191,21 @@ AppStateManager(EVENT_APP event)
         {
           ZCB_eventSchedulerEventAdd(EVENT_APP_FINISH_EVENT_JOB);
         }
+      }
+
+      if((EVENT_APP_IN_AND_EXCLUDE == event) ||(EVENT_SYSTEM_LEARNMODE_START == event))
+      {
+        if (myNodeID)
+        {
+          ZW_DEBUG_SENSORPIR_SEND_STR("LEARN_MODE_EXCLUSION");
+          ZW_NetworkLearnModeStart(E_NETWORK_LEARN_MODE_EXCLUSION_NWE);
+        }
+        else
+        {
+          ZW_DEBUG_SENSORPIR_SEND_STR("LEARN_MODE_INCLUSION");
+          ZW_NetworkLearnModeStart(E_NETWORK_LEARN_MODE_INCLUSION);
+        }
+        ChangeState(STATE_APP_LEARN_MODE);
       }
 
       if(EVENT_APP_BASIC_START_JOB == event)
@@ -1152,19 +1229,35 @@ AppStateManager(EVENT_APP event)
       }
 
 
-      if(EVENT_APP_NOTIFICATION_START_JOB == event)
+      if ((EVENT_APP_RESET == event))
       {
-        ZW_DEBUG_SENSORPIR_SEND_STR("\r\nEVENT_APP_NOTIFICATION_START_JOB");
-        NotificationEventTrigger(&lifelineProfile,
-            NOTIFICATION_REPORT_SMOKE_V4,
-            supportedEvents[myEvent],
-            NULL, 0,
-            ENDPOINT_ROOT);
-        if(JOB_STATUS_SUCCESS !=  UnsolicitedNotificationAction(&lifelineProfile, ENDPOINT_ROOT, ZCB_JobStatus))
-        {
-          /*Kick next job*/
-          ZCB_eventSchedulerEventAdd(EVENT_APP_NEXT_EVENT_JOB);
-        }
+        /*
+         * Since this application is a routing slave, it'll use the internal NVM also known as the
+         * MTP. The MTP is getting flushed 300 ms after the latest write which means we'll have to
+         * wait some time before resetting the device.
+         */
+        MemoryPutByte((WORD)&EEOFFSET_MAGIC_far, 1 + APPL_MAGIC_VALUE);
+        ZW_TimerLongStart(ZCB_ResetDelay, 300, TIMER_ONE_TIME);
+        ZAF_pm_KeepAwake(ZAF_PM_HALF_SECOND);
+      }
+
+      if(EVENT_APP_NOTIFICATION_START_JOB == event || EVENT_APP_NOTI == event)
+      {
+        if (0 == myNodeID) {
+			ChangeState(STATE_APP_IDLE);
+		}
+		else {
+			NotificationEventTrigger(&lifelineProfile,
+				NOTIFICATION_REPORT_SMOKE_V4,
+				supportedEvents[myEvent],
+				NULL, 0,
+				ENDPOINT_ROOT);
+			if(JOB_STATUS_SUCCESS !=  UnsolicitedNotificationAction(&lifelineProfile, ENDPOINT_ROOT, ZCB_JobStatus))
+			{
+			/*Kick next job*/
+				ZCB_eventSchedulerEventAdd(EVENT_APP_NEXT_EVENT_JOB);
+			}
+		}
       }
 
       if(EVENT_APP_NOTIFICATION_STOP_JOB == event)
@@ -1205,8 +1298,8 @@ AppStateManager(EVENT_APP event)
 		ZW_UART0_tx_send_byte(0x00);
 		while (ZW_UART0_tx_active_get());
 		ZW_UART0_tx_send_byte(0x00);
-		for (i=0;i<250;i++);
 		while (ZW_UART0_tx_active_get());
+		for (i=0;i<250;i++);
 		ZW_UART0_tx_send_byte(0xCC);
 		while (ZW_UART0_tx_active_get());
 		ZW_UART0_tx_send_byte(0x99);

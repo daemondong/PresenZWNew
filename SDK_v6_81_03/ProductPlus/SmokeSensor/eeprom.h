@@ -86,7 +86,7 @@ extern BYTE far EEOFFSET_alarmStatus_far[MAX_NOTIFICATIONS];
 extern BYTE far EEOFFSET_MAGIC_far;
 extern BYTE far EEOFFSET_Led_Enable;
 extern BYTE far EEOFFSET_Last_Event;
-extern BYTE far EEOFFSET_alarmStatus_far[MAX_NOTIFICATIONS];
+extern BYTE far EEOFFSET_Batt_Level;
 
 extern t_nvmModuleDescriptor far nvmApplicationDescriptor;
 

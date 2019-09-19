@@ -1,0 +1,6 @@
+09:21:45 **** Incremental Build of configuration GNU ARM v7.2.1 - Debug for project SensorPIR_2 ****
+make -j8 all 
+make: Nothing to be done for `all'.
+
+09:21:49 Build Finished (took 3s.479ms)
+

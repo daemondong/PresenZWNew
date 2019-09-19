@@ -262,7 +262,8 @@ my_GetPinVal(BYTE pin)
 }
 
 void Deal_PortChange( BYTE port, BYTE chgval, BYTE nowval);
-
+void TestTimerJob(void);
+BYTE TestTimer=0;
 void ZCB_TimerMyUtil(void)
 {
 #ifdef MULTISWITCH
@@ -332,6 +333,12 @@ void ZCB_TimerMyUtil(void)
   else { PIN_OFF(P10); }
   if (multival>=MULTIMAX) multival = 0;
 #endif
+
+  TestTimer++;
+  if (TestTimer>=100) {
+	  TestTimer=0;
+	  TestTimerJob();
+  }
 }
 
 

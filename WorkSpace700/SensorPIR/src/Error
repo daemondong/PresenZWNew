@@ -1,0 +1,9 @@
+
+Zwave plus Info     TESTSEQ Get EndPoints
+    case COMMAND_CLASS_VERSION:
+      frame_status = CC_Version_handler(rxOpt, pCmd, cmdLength);
+      break;
+      
+   0x86·µ»Ø 3   0x60·µ»Ø 4
+   
+   

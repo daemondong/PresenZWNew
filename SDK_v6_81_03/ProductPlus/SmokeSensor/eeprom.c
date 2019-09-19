@@ -74,6 +74,7 @@ BYTE far EEOFFSET_alarmStatus_far[MAX_NOTIFICATIONS];
 BYTE far EEOFFSET_MAGIC_far;
 BYTE far EEOFFSET_Led_Enable;
 BYTE far EEOFFSET_Last_Event;
+BYTE far EEOFFSET_Batt_Level;
 
 /* NVM module descriptor for module. Located at the end of NVM module.      */
 /* During the initialization phase, the NVM still contains the NVM contents */

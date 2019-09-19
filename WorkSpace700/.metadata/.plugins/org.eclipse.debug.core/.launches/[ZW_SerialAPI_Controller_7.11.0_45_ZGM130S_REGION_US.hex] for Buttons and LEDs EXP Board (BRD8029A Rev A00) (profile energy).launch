@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="com.silabs.ss.tool.energyprofiler.si32.launch">
+<booleanAttribute key="com.silabs.ide.si32.debug.EAPROFILER_CODE_CORRELATION" value="true"/>
+<stringAttribute key="com.silabs.ss.framework.debugger.core.BOARDS" value="brd4001a:0.0.0.A01 brd4202a:0.0.0 brd8029a:0.0.0.A00"/>
+<stringAttribute key="com.silabs.ss.framework.debugger.core.DEFAULT_ADAPTER" value=""/>
+<stringAttribute key="com.silabs.ss.framework.debugger.core.ERASE_METHOD" value="page"/>
+<stringAttribute key="com.silabs.ss.framework.debugger.core.MCU" value="mcu.arm.efr32.zg13.zgm130s037hgn1"/>
+<booleanAttribute key="com.silabs.ss.framework.debugger.core.RUN_FROM_RESET" value="true"/>
+<booleanAttribute key="com.silabs.ss.framework.debugger.core.SMART_DOWNLOAD" value="false"/>
+<stringAttribute key="org.eclipse.cdt.launch.DEBUGGER_START_MODE" value="run"/>
+<booleanAttribute key="org.eclipse.cdt.launch.DEBUGGER_STOP_AT_MAIN" value="true"/>
+<stringAttribute key="org.eclipse.cdt.launch.DEBUGGER_STOP_AT_MAIN_SYMBOL" value="main"/>
+<stringAttribute key="org.eclipse.cdt.launch.PROGRAM_NAME" value="D:\SiliconLabs\SimplicityStudio\v4\developer\sdks\zwave\v7.11.0\Apps\bin\ZW_SerialAPI_Controller_7.11.0_45_ZGM130S_REGION_US.hex"/>
+<stringAttribute key="org.eclipse.cdt.launch.PROJECT_ATTR" value=""/>
+<stringAttribute key="org.eclipse.dsf.launch.MEMORY_BLOCKS" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;memoryBlockExpressionList context=&quot;reserved-for-future-use&quot;/&gt;&#13;&#10;"/>
+</launchConfiguration>

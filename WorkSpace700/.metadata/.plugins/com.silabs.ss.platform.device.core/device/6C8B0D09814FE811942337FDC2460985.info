@@ -1,0 +1,4 @@
+protectFromDetectionUpdates=false
+label=CP2102N USB to UART Bridge Controller (ID:0) (6c8b0d09814fe811942337fdc2460985)
+boardOverrides {
+}

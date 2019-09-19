@@ -1,0 +1,7 @@
+# !SESSION 2019-06-17 09:01:21.811
+# version: 1.1
+# verbose: true
+# The following option strings are specified for this debug session:
+# 	null
+| Worker-7 | 2019-06-17 09:01:21.811 | com.iar.ide.common | /debug | com.iar.ide.common.logging.Logger | traceFile | 194 | SDK location given by ISdkProvider instance: D:\Program Files (x86)\IAR Systems\Embedded Workbench 8.2 |
+| Worker-7 | 2019-06-17 09:01:21.822 | com.iar.ide.common | /debug | com.iar.ide.common.logging.Logger | traceFile | 194 | The path to EW has now been set to: D:\Program Files (x86)\IAR Systems\Embedded Workbench 8.2 for provider iar.sdkprovider.arm |

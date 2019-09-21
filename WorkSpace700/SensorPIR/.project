@@ -184,11 +184,6 @@
 			<locationURI>STUDIO_SDK_LOC/ZAF/CommandClasses/ManufacturerSpecific/CC_ManufacturerSpecific.c</locationURI>
 		</link>
 		<link>
-			<name>ZAF_CommandClasses_MultiChan/CC_MultiChan.c</name>
-			<type>1</type>
-			<locationURI>STUDIO_SDK_LOC/ZAF/CommandClasses/MultiChan/CC_MultiChan.c</locationURI>
-		</link>
-		<link>
 			<name>ZAF_CommandClasses_MultiChan/multichannel.c</name>
 			<type>1</type>
 			<locationURI>STUDIO_SDK_LOC/ZAF/CommandClasses/MultiChan/multichannel.c</locationURI>

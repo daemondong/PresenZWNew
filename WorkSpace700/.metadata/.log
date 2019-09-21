@@ -11250,3 +11250,390 @@ java.lang.NullPointerException
 !ENTRY com.silabs.ss.framework.ide.ui 1 0 2019-09-19 10:50:30.932
 !MESSAGE Input was not a supported editor, maybe we need more support? org.eclipse.ui.internal.editors.text.NonExistingFileEditorInput@dd767ac0
 	=>called from: com.silabs.ss.framework.ide.internal.project.ui.StudioDefaultFileModificationValidator.getFileAndVerificator(StudioDefaultFileModificationValidator.java:337)
+!SESSION 2019-09-19 16:13:22.796 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_92
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=zh_CN
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.silabs.ss.platform.apack.core 1 0 2019-09-19 16:13:33.498
+!MESSAGE Ignoring path $(env.STUDIO_PYTHON3_PATH) in Python
+
+!ENTRY com.silabs.ss.platform.apack.core 1 0 2019-09-19 16:13:33.502
+!MESSAGE Ignoring path $(env.STUDIO_PYTHON3_PATH)/bin in Python
+
+!ENTRY com.silabs.ss.platform.rcp.core 4 0 2019-09-19 16:13:51.227
+!MESSAGE Stack does not contain stack ID. Please do one of the following:
+  - add stack.properties file to the root, with 'id=<ID>' line in it
+  - add stack id to at least one of the appbuilder.properties file
+  - make one of the extended stacks populate stack id
+
+
+!ENTRY com.silabs.ss.platform.rcp.core 4 0 2019-09-19 16:13:51.232
+!MESSAGE Stack does not contain stack ID. Please do one of the following:
+  - add stack.properties file to the root, with 'id=<ID>' line in it
+  - add stack id to at least one of the appbuilder.properties file
+  - make one of the extended stacks populate stack id
+
+
+!ENTRY org.eclipse.equinox.ds 2 0 2019-09-19 16:13:53.700
+!MESSAGE Getting a lock required more than 10000 ms. There might be a synchronization problem in this callstack or just the build/dispose process of some components took too long! 
+!STACK 0
+java.lang.Exception: Debug stacktrace
+	at org.eclipse.equinox.internal.ds.InstanceProcess.getLock(InstanceProcess.java:120)
+	at org.eclipse.equinox.internal.ds.InstanceProcess.buildComponent(InstanceProcess.java:560)
+	at org.eclipse.equinox.internal.ds.ServiceReg.getService(ServiceReg.java:53)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceFactoryUse$1.run(ServiceFactoryUse.java:212)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceFactoryUse.factoryGetService(ServiceFactoryUse.java:210)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceFactoryUse.getService(ServiceFactoryUse.java:111)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceConsumer$2.getService(ServiceConsumer.java:45)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceRegistrationImpl.getService(ServiceRegistrationImpl.java:496)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceRegistry.getService(ServiceRegistry.java:461)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl.getService(BundleContextImpl.java:619)
+	at org.eclipse.equinox.internal.p2.core.ProvisioningAgent.addingService(ProvisioningAgent.java:159)
+	at org.osgi.util.tracker.ServiceTracker$Tracked.customizerAdding(ServiceTracker.java:941)
+	at org.osgi.util.tracker.ServiceTracker$Tracked.customizerAdding(ServiceTracker.java:1)
+	at org.osgi.util.tracker.AbstractTracked.trackAdding(AbstractTracked.java:256)
+	at org.osgi.util.tracker.AbstractTracked.trackInitial(AbstractTracked.java:183)
+	at org.osgi.util.tracker.ServiceTracker.open(ServiceTracker.java:318)
+	at org.osgi.util.tracker.ServiceTracker.open(ServiceTracker.java:261)
+	at org.eclipse.equinox.internal.p2.core.ProvisioningAgent.getService(ProvisioningAgent.java:66)
+	at com.silabs.ss.platform.internal.api.installer.core.InstallerUtils.scanFeaturesProvidingMetadata(InstallerUtils.java:446)
+	at com.silabs.ss.platform.internal.api.installer.core.InstallerUtils.getPackageProvidingMetadata(InstallerUtils.java:469)
+	at com.silabs.ss.platform.internal.installer.core.PackageService.loadRemotePackages(PackageService.java:682)
+	at com.silabs.ss.platform.internal.installer.core.PackageService.getAllAvailablePackages(PackageService.java:140)
+	at com.silabs.ss.platform.internal.installer.core.PackageService.getAvailablePackages(PackageService.java:175)
+	at com.silabs.ss.platform.internal.installer.core.PackageService.requestPackageTypeInstalled(PackageService.java:568)
+	at com.silabs.ss.platform.api.device.core.DeviceManager.triggerInspectors(DeviceManager.java:361)
+	at com.silabs.ss.platform.api.device.core.DeviceManager.addDevice(DeviceManager.java:322)
+	at com.silabs.ss.platform.api.device.core.detection.DeviceDetectionManager.processDetectionInfo(DeviceDetectionManager.java:206)
+	at com.silabs.ss.platform.api.device.core.detection.DeviceDetectionManager.list(DeviceDetectionManager.java:399)
+	at com.silabs.ss.platform.internal.apack.device.UsbDeviceBridgeListener.list(UsbHotplugNotifier.java:130)
+	at com.silabs.ss.platform.api.apack.usb.UsbManager.lambda$7(UsbManager.java:201)
+	at com.silabs.java.utils.ListenerList.fire(ListenerList.java:127)
+	at com.silabs.ss.platform.api.apack.usb.UsbManager.parseAction(UsbManager.java:201)
+	at com.silabs.ss.platform.api.apack.usb.UsbManager.parseAction(UsbManager.java:1)
+	at com.silabs.java.utils.LineParser$InternalActionListener.parseAction(LineParser.java:93)
+	at com.silabs.ss.platform.internal.apack.usb.UsbDetectorLineHandler.handle(UsbDetectorLineHandler.java:65)
+	at com.silabs.ss.platform.internal.apack.usb.UsbDetectorLineHandler.handle(UsbDetectorLineHandler.java:1)
+	at com.silabs.ss.platform.api.apack.core.execution.ErrorLoggerLineHandler.handle(Executioner.java:362)
+	at com.silabs.ss.platform.api.apack.core.execution.ErrorLoggerLineHandler.handle(Executioner.java:1)
+	at com.silabs.java.utils.LineParser.parse(LineParser.java:76)
+	at com.silabs.java.utils.LineParser.parse(LineParser.java:62)
+	at com.silabs.ss.platform.api.apack.core.execution.ParserThread.run(Executioner.java:324)
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2019-09-19 16:13:54.119
+!MESSAGE Local timestamp file does not exist: D:\SiliconLabs\SimplicityStudio\v4\offline\common\Simplicity_Studio_Terms_of_Use_and_Privacy_Statement.timestamp
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2019-09-19 16:14:51.728
+!MESSAGE Local timestamp file does not exist: D:\SiliconLabs\SimplicityStudio\v4\offline\common\Simplicity_Studio_Terms_of_Use_and_Privacy_Statement.timestamp
+
+!ENTRY com.silabs.ss.platform.installer.core 4 0 2019-09-19 17:03:06.149
+!MESSAGE Site not reachable - /embed/playlist
+!STACK 0
+java.net.SocketTimeoutException: connect timed out
+	at java.net.TwoStacksPlainSocketImpl.socketConnect(Native Method)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:350)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)
+	at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:172)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:589)
+	at sun.security.ssl.SSLSocketImpl.connect(SSLSocketImpl.java:668)
+	at sun.net.NetworkClient.doConnect(NetworkClient.java:175)
+	at sun.net.www.http.HttpClient.openServer(HttpClient.java:432)
+	at sun.net.www.http.HttpClient.openServer(HttpClient.java:527)
+	at sun.net.www.protocol.https.HttpsClient.<init>(HttpsClient.java:264)
+	at sun.net.www.protocol.https.HttpsClient.New(HttpsClient.java:367)
+	at sun.net.www.protocol.https.AbstractDelegateHttpsURLConnection.getNewHttpClient(AbstractDelegateHttpsURLConnection.java:191)
+	at sun.net.www.protocol.http.HttpURLConnection.plainConnect0(HttpURLConnection.java:1105)
+	at sun.net.www.protocol.http.HttpURLConnection.plainConnect(HttpURLConnection.java:999)
+	at sun.net.www.protocol.https.AbstractDelegateHttpsURLConnection.connect(AbstractDelegateHttpsURLConnection.java:177)
+	at sun.net.www.protocol.https.HttpsURLConnectionImpl.connect(HttpsURLConnectionImpl.java:153)
+	at com.silabs.ss.platform.internal.api.installer.core.InstallerUtils.isHostAvailable(InstallerUtils.java:1626)
+	at com.silabs.ss.platform.internal.launcher.ui.viewers.ResourcesViewer.isUrlReachable(ResourcesViewer.java:322)
+	at com.silabs.ss.platform.internal.launcher.ui.viewers.ResourcesViewer.access$6(ResourcesViewer.java:316)
+	at com.silabs.ss.platform.internal.launcher.ui.viewers.ResourcesViewer$4.run(ResourcesViewer.java:280)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+!SESSION 2019-09-21 09:36:05.371 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_92
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=zh_CN
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.silabs.ss.platform.apack.core 1 0 2019-09-21 09:36:16.223
+!MESSAGE Ignoring path $(env.STUDIO_PYTHON3_PATH) in Python
+
+!ENTRY com.silabs.ss.platform.apack.core 1 0 2019-09-21 09:36:16.228
+!MESSAGE Ignoring path $(env.STUDIO_PYTHON3_PATH)/bin in Python
+
+!ENTRY com.silabs.ss.platform.rcp.core 4 0 2019-09-21 09:36:22.128
+!MESSAGE Stack does not contain stack ID. Please do one of the following:
+  - add stack.properties file to the root, with 'id=<ID>' line in it
+  - add stack id to at least one of the appbuilder.properties file
+  - make one of the extended stacks populate stack id
+
+
+!ENTRY com.silabs.ss.platform.rcp.core 4 0 2019-09-21 09:36:22.131
+!MESSAGE Stack does not contain stack ID. Please do one of the following:
+  - add stack.properties file to the root, with 'id=<ID>' line in it
+  - add stack id to at least one of the appbuilder.properties file
+  - make one of the extended stacks populate stack id
+
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2019-09-21 09:36:38.025
+!MESSAGE Local timestamp file does not exist: D:\SiliconLabs\SimplicityStudio\v4\offline\common\Simplicity_Studio_Terms_of_Use_and_Privacy_Statement.timestamp
+
+!ENTRY org.eclipse.equinox.ds 2 0 2019-09-21 09:36:47.103
+!MESSAGE Getting a lock required more than 10000 ms. There might be a synchronization problem in this callstack or just the build/dispose process of some components took too long! 
+!STACK 0
+java.lang.Exception: Debug stacktrace
+	at org.eclipse.equinox.internal.ds.InstanceProcess.getLock(InstanceProcess.java:120)
+	at org.eclipse.equinox.internal.ds.InstanceProcess.buildComponent(InstanceProcess.java:560)
+	at org.eclipse.equinox.internal.ds.ServiceReg.getService(ServiceReg.java:53)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceFactoryUse$1.run(ServiceFactoryUse.java:212)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceFactoryUse.factoryGetService(ServiceFactoryUse.java:210)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceFactoryUse.getService(ServiceFactoryUse.java:111)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceConsumer$2.getService(ServiceConsumer.java:45)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceRegistrationImpl.getService(ServiceRegistrationImpl.java:496)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceRegistry.getService(ServiceRegistry.java:461)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl.getService(BundleContextImpl.java:619)
+	at org.eclipse.equinox.internal.p2.core.ProvisioningAgent.addingService(ProvisioningAgent.java:159)
+	at org.osgi.util.tracker.ServiceTracker$Tracked.customizerAdding(ServiceTracker.java:941)
+	at org.osgi.util.tracker.ServiceTracker$Tracked.customizerAdding(ServiceTracker.java:1)
+	at org.osgi.util.tracker.AbstractTracked.trackAdding(AbstractTracked.java:256)
+	at org.osgi.util.tracker.AbstractTracked.trackInitial(AbstractTracked.java:183)
+	at org.osgi.util.tracker.ServiceTracker.open(ServiceTracker.java:318)
+	at org.osgi.util.tracker.ServiceTracker.open(ServiceTracker.java:261)
+	at org.eclipse.equinox.internal.p2.core.ProvisioningAgent.getService(ProvisioningAgent.java:66)
+	at com.silabs.ss.platform.internal.api.installer.core.InstallerUtils.scanFeaturesProvidingMetadata(InstallerUtils.java:446)
+	at com.silabs.ss.platform.internal.api.installer.core.InstallerUtils.getPackageProvidingMetadata(InstallerUtils.java:469)
+	at com.silabs.ss.platform.internal.installer.core.PackageService.loadRemotePackages(PackageService.java:682)
+	at com.silabs.ss.platform.internal.installer.core.PackageService.getAllAvailablePackages(PackageService.java:140)
+	at com.silabs.ss.platform.internal.installer.core.PackageService.getAvailablePackages(PackageService.java:175)
+	at com.silabs.ss.platform.internal.installer.core.PackageService.requestPackageTypeInstalled(PackageService.java:568)
+	at com.silabs.ss.platform.api.device.core.DeviceManager.triggerInspectors(DeviceManager.java:361)
+	at com.silabs.ss.platform.api.device.core.DeviceManager.addDevice(DeviceManager.java:322)
+	at com.silabs.ss.platform.api.device.core.detection.DeviceDetectionManager.processDetectionInfo(DeviceDetectionManager.java:206)
+	at com.silabs.ss.platform.api.device.core.detection.DeviceDetectionManager.list(DeviceDetectionManager.java:399)
+	at com.silabs.ss.platform.internal.apack.device.UsbDeviceBridgeListener.list(UsbHotplugNotifier.java:130)
+	at com.silabs.ss.platform.api.apack.usb.UsbManager.lambda$7(UsbManager.java:201)
+	at com.silabs.java.utils.ListenerList.fire(ListenerList.java:127)
+	at com.silabs.ss.platform.api.apack.usb.UsbManager.parseAction(UsbManager.java:201)
+	at com.silabs.ss.platform.api.apack.usb.UsbManager.parseAction(UsbManager.java:1)
+	at com.silabs.java.utils.LineParser$InternalActionListener.parseAction(LineParser.java:93)
+	at com.silabs.ss.platform.internal.apack.usb.UsbDetectorLineHandler.handle(UsbDetectorLineHandler.java:65)
+	at com.silabs.ss.platform.internal.apack.usb.UsbDetectorLineHandler.handle(UsbDetectorLineHandler.java:1)
+	at com.silabs.ss.platform.api.apack.core.execution.ErrorLoggerLineHandler.handle(Executioner.java:362)
+	at com.silabs.ss.platform.api.apack.core.execution.ErrorLoggerLineHandler.handle(Executioner.java:1)
+	at com.silabs.java.utils.LineParser.parse(LineParser.java:76)
+	at com.silabs.java.utils.LineParser.parse(LineParser.java:62)
+	at com.silabs.ss.platform.api.apack.core.execution.ParserThread.run(Executioner.java:324)
+
+!ENTRY com.silabs.ss.platform.content.core 4 0 2019-09-21 09:37:53.031
+!MESSAGE Local timestamp file does not exist: D:\SiliconLabs\SimplicityStudio\v4\offline\common\Simplicity_Studio_Terms_of_Use_and_Privacy_Statement.timestamp
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2019-09-21 09:40:06.487
+!MESSAGE Unknown architecture(s) [efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[i]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[i]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[g]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[g]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[g]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[g]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[i]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[i]~package[m]~pins[48]+gcc, boards=none, BRD4165B] in framework btmesh
+
+!ENTRY com.silabs.ss.platform.rcp.core 4 0 2019-09-21 09:40:06.694
+!MESSAGE Demo information file is empty at D:\SiliconLabs\SimplicityStudio\v4\configuration\org.eclipse.osgi\1346\0\.cp\demos\demos.xml
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2019-09-21 09:40:07.635
+!MESSAGE Unknown board 'BRD4165B' in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2019-09-21 09:40:07.635
+!MESSAGE Unknown board 'BRD4171A' in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2019-09-21 09:40:07.636
+!MESSAGE Unknown board 'BRD4176A' in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2019-09-21 09:40:07.730
+!MESSAGE Unknown architecture(s) [efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[g]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[g]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[i]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[832]~flash[512k]~temp[i]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[g]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[g]~package[m]~pins[48]+gcc, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[i]~package[m]~pins[48]+iar, efr32~family[m]~series[1]~device_configuration[3]~performance[p]~radio[932]~flash[512k]~temp[i]~package[m]~pins[48]+gcc] in framework ble
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2019-09-21 09:40:07.732
+!MESSAGE Unknown board 'BRD4165A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2019-09-21 09:40:07.733
+!MESSAGE Unknown board 'BRD4165B' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2019-09-21 09:40:07.733
+!MESSAGE Unknown board 'BRD4171A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2019-09-21 09:40:07.734
+!MESSAGE Unknown board 'BRD4176A' in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2019-09-21 09:40:07.740
+!MESSAGE Unknown architecture(s) [EFR32BG13P632F512IM48, EFR32FG13P231F512IM48, EFR32MG13P732F512IM48, EFR32MG13P733F512IM48, EFR32MG13P832F512GM48, EFR32MG13P832F512IM48, EFR32MG13P932F512GM48, EFR32MG13P932F512IM48, EFR32FG14V132F256GM32, EFR32FG14V132F256GM48, EFR32BG21B010F1024IM32, EFR32BG21B010F512IM32, EFR32BG21B020F1024IM32, EFR32BG21B020F512IM32, EFR32MG21B010F1024IM32, EFR32MG21B010F512IM32, EFR32MG21B020F512IM32, RM21Z000F1024IM32] in framework flex
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2019-09-21 09:40:09.295
+!MESSAGE Unknown architecture(s) [efr32mg13p832f512im48+brd4165b+gcc, efr32mg13p832f512im48+brd4165b+iar] in sample app NCP - Mesh Empty Target
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2019-09-21 09:40:09.407
+!MESSAGE Unknown architecture(s) [efr32mg13p832f512im48+brd4165b+gcc, efr32mg13p832f512im48+brd4165b+iar] in sample app SOC - Bt Mesh Light
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2019-09-21 09:40:09.421
+!MESSAGE Unknown architecture(s) [efr32mg13p832f512im48+brd4165b+gcc, efr32mg13p832f512im48+brd4165b+iar] in sample app SOC - Bt Mesh Switch
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2019-09-21 09:40:09.514
+!MESSAGE Unknown architecture(s) [efr32mg13p832f512im48+brd4165b+gcc, efr32mg13p832f512im48+brd4165b+iar] in sample app NCP target - Empty
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2019-09-21 09:40:09.568
+!MESSAGE Unknown architecture(s) [efr32mg13p832f512im48+brd4165b+iar] in sample app NCP target - Switched Multiprotocol Trust Center
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2019-09-21 09:40:09.585
+!MESSAGE Unknown architecture(s) [efr32mg13p832f512im48+brd4165b+gcc, efr32mg13p832f512im48+brd4165b+iar] in sample app SOC - DTM
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2019-09-21 09:40:09.639
+!MESSAGE Unknown architecture(s) [efr32mg13p832f512im48+brd4165b+gcc, efr32mg13p832f512im48+brd4165b+iar] in sample app SOC - Empty - RAIL - DMP
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2019-09-21 09:40:09.679
+!MESSAGE Unknown architecture(s) [efr32mg13p832f512im48+brd4165b+gcc, efr32mg13p832f512im48+brd4165b+iar] in sample app SOC - Light - RAIL - DMP
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2019-09-21 09:40:09.698
+!MESSAGE Unknown architecture(s) [efr32mg13p832f512im48+brd4165b+gcc, efr32mg13p832f512im48+brd4165b+iar] in sample app SOC - Range Test - RAIL - DMP
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2019-09-21 09:40:09.709
+!MESSAGE Unknown architecture(s) [efr32mg13p832f512im48+brd4165b+gcc, efr32mg13p832f512im48+brd4165b+iar] in sample app SOC - Smart Phone App
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2019-09-21 09:40:09.756
+!MESSAGE Unknown architecture(s) [efr32mg13p832f512im48+brd4165b+gcc, efr32mg13p832f512im48+brd4165b+iar] in sample app SOC - Thermometer
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2019-09-21 09:40:09.769
+!MESSAGE Unknown architecture(s) [efr32mg13p832f512im48+brd4165b+gcc, efr32mg13p832f512im48+brd4165b+iar] in sample app SOC - Thermometer - Client
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2019-09-21 09:40:09.782
+!MESSAGE Unknown architecture(s) [efr32mg13p832f512im48+brd4165b+gcc, efr32mg13p832f512im48+brd4165b+iar] in sample app SOC - Thermometer - RTOS
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2019-09-21 09:40:10.049
+!MESSAGE Unknown architecture(s) [BRD4165B] in sample app RAIL: Range Test
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2019-09-21 09:40:10.118
+!MESSAGE Unknown architecture(s) [efm32~series[1]~family[G]] in sample app Internal Storage Bootloader (single image on 1MB device)
+
+!ENTRY com.silabs.ss.platform.rcp.core 2 0 2019-09-21 09:40:10.131
+!MESSAGE Unknown architecture(s) [efm32~series[1]~family[G]] in sample app Internal Storage Bootloader (single image with LZMA compression, 1MB flash)
+
+!ENTRY com.silabs.ss.platform.installer.core 4 0 2019-09-21 09:40:14.380
+!MESSAGE Site not reachable - /embed/playlist
+!STACK 0
+java.net.SocketTimeoutException: connect timed out
+	at java.net.TwoStacksPlainSocketImpl.socketConnect(Native Method)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:350)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)
+	at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:172)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:589)
+	at sun.security.ssl.SSLSocketImpl.connect(SSLSocketImpl.java:668)
+	at sun.net.NetworkClient.doConnect(NetworkClient.java:175)
+	at sun.net.www.http.HttpClient.openServer(HttpClient.java:432)
+	at sun.net.www.http.HttpClient.openServer(HttpClient.java:527)
+	at sun.net.www.protocol.https.HttpsClient.<init>(HttpsClient.java:264)
+	at sun.net.www.protocol.https.HttpsClient.New(HttpsClient.java:367)
+	at sun.net.www.protocol.https.AbstractDelegateHttpsURLConnection.getNewHttpClient(AbstractDelegateHttpsURLConnection.java:191)
+	at sun.net.www.protocol.http.HttpURLConnection.plainConnect0(HttpURLConnection.java:1105)
+	at sun.net.www.protocol.http.HttpURLConnection.plainConnect(HttpURLConnection.java:999)
+	at sun.net.www.protocol.https.AbstractDelegateHttpsURLConnection.connect(AbstractDelegateHttpsURLConnection.java:177)
+	at sun.net.www.protocol.https.HttpsURLConnectionImpl.connect(HttpsURLConnectionImpl.java:153)
+	at com.silabs.ss.platform.internal.api.installer.core.InstallerUtils.isHostAvailable(InstallerUtils.java:1626)
+	at com.silabs.ss.platform.internal.launcher.ui.viewers.ResourcesViewer.isUrlReachable(ResourcesViewer.java:322)
+	at com.silabs.ss.platform.internal.launcher.ui.viewers.ResourcesViewer.access$6(ResourcesViewer.java:316)
+	at com.silabs.ss.platform.internal.launcher.ui.viewers.ResourcesViewer$4.run(ResourcesViewer.java:280)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+
+!ENTRY com.silabs.ss.framework.ide.project.core.cpp 2 0 2019-09-21 09:40:34.622
+!MESSAGE Adding library object as split of library search path and library name. This may cause build errors!
+!STACK 0
+java.lang.Exception
+	at com.silabs.java.utils.ExceptionUtils.newMinimalStackException(ExceptionUtils.java:29)
+	at com.silabs.ss.framework.ide.internal.api.project.core.cpp.CppBuildConfigBuildSettings.addLibraryObject(CppBuildConfigBuildSettings.java:394)
+	at com.silabs.ss.framework.ide.internal.project.core.cpp.CppProjectEngineOperationHandler.handleAddLibraryFileSettingOperation(CppProjectEngineOperationHandler.java:237)
+	at com.silabs.ss.framework.project.api.core.engine.operations.AddLibraryFileSettingOperation.executeProcess(AddLibraryFileSettingOperation.java:51)
+	at com.silabs.ss.framework.project.internal.core.engine.ProjectModelEngine.queueProjectOperations(ProjectModelEngine.java:805)
+	at com.silabs.ss.framework.project.internal.core.engine.ProjectModelEngine.applyProjectOperations(ProjectModelEngine.java:772)
+	at com.silabs.ss.framework.project.api.core.templates.ProjectModelTemplate.executeTemplateProcesses(ProjectModelTemplate.java:410)
+	at com.silabs.ss.framework.ide.api.project.sls.core.creator.BaseCreateConvertProjectHandler.workOnProject(BaseCreateConvertProjectHandler.java:216)
+	at com.silabs.ss.framework.ide.api.project.sls.core.creator.BaseCreateConvertProjectHandler.createOrConvertProject(BaseCreateConvertProjectHandler.java:287)
+	at ... extra clipped....(Unknown Source)
+
+!ENTRY com.silabs.ss.framework.ide.project.core.cpp 2 0 2019-09-21 09:40:34.623
+!MESSAGE Adding library object as split of library search path and library name. This may cause build errors!
+!STACK 0
+java.lang.Exception
+	at com.silabs.java.utils.ExceptionUtils.newMinimalStackException(ExceptionUtils.java:29)
+	at com.silabs.ss.framework.ide.internal.api.project.core.cpp.CppBuildConfigBuildSettings.addLibraryObject(CppBuildConfigBuildSettings.java:394)
+	at com.silabs.ss.framework.ide.internal.project.core.cpp.CppProjectEngineOperationHandler.handleAddLibraryFileSettingOperation(CppProjectEngineOperationHandler.java:237)
+	at com.silabs.ss.framework.project.api.core.engine.operations.AddLibraryFileSettingOperation.executeProcess(AddLibraryFileSettingOperation.java:51)
+	at com.silabs.ss.framework.project.internal.core.engine.ProjectModelEngine.queueProjectOperations(ProjectModelEngine.java:805)
+	at com.silabs.ss.framework.project.internal.core.engine.ProjectModelEngine.applyProjectOperations(ProjectModelEngine.java:772)
+	at com.silabs.ss.framework.project.api.core.templates.ProjectModelTemplate.executeTemplateProcesses(ProjectModelTemplate.java:410)
+	at com.silabs.ss.framework.ide.api.project.sls.core.creator.BaseCreateConvertProjectHandler.workOnProject(BaseCreateConvertProjectHandler.java:216)
+	at com.silabs.ss.framework.ide.api.project.sls.core.creator.BaseCreateConvertProjectHandler.createOrConvertProject(BaseCreateConvertProjectHandler.java:287)
+	at ... extra clipped....(Unknown Source)
+
+!ENTRY com.silabs.ss.framework.ide.project.core.cpp 2 0 2019-09-21 09:40:34.632
+!MESSAGE Adding library object as split of library search path and library name. This may cause build errors!
+!STACK 0
+java.lang.Exception
+	at com.silabs.java.utils.ExceptionUtils.newMinimalStackException(ExceptionUtils.java:29)
+	at com.silabs.ss.framework.ide.internal.api.project.core.cpp.CppBuildConfigBuildSettings.addLibraryObject(CppBuildConfigBuildSettings.java:394)
+	at com.silabs.ss.framework.ide.internal.project.core.cpp.CppProjectEngineOperationHandler.handleAddLibraryFileSettingOperation(CppProjectEngineOperationHandler.java:237)
+	at com.silabs.ss.framework.project.api.core.engine.operations.AddLibraryFileSettingOperation.executeProcess(AddLibraryFileSettingOperation.java:51)
+	at com.silabs.ss.framework.project.internal.core.engine.ProjectModelEngine.queueProjectOperations(ProjectModelEngine.java:805)
+	at com.silabs.ss.framework.project.internal.core.engine.ProjectModelEngine.applyProjectOperations(ProjectModelEngine.java:772)
+	at com.silabs.ss.framework.project.api.core.templates.ProjectModelTemplate.executeTemplateProcesses(ProjectModelTemplate.java:410)
+	at com.silabs.ss.framework.ide.api.project.sls.core.creator.BaseCreateConvertProjectHandler.workOnProject(BaseCreateConvertProjectHandler.java:216)
+	at com.silabs.ss.framework.ide.api.project.sls.core.creator.BaseCreateConvertProjectHandler.createOrConvertProject(BaseCreateConvertProjectHandler.java:287)
+	at ... extra clipped....(Unknown Source)
+
+!ENTRY com.silabs.ss.framework.ide.project.core.cpp 2 0 2019-09-21 09:40:34.633
+!MESSAGE Adding library object as split of library search path and library name. This may cause build errors!
+!STACK 0
+java.lang.Exception
+	at com.silabs.java.utils.ExceptionUtils.newMinimalStackException(ExceptionUtils.java:29)
+	at com.silabs.ss.framework.ide.internal.api.project.core.cpp.CppBuildConfigBuildSettings.addLibraryObject(CppBuildConfigBuildSettings.java:394)
+	at com.silabs.ss.framework.ide.internal.project.core.cpp.CppProjectEngineOperationHandler.handleAddLibraryFileSettingOperation(CppProjectEngineOperationHandler.java:237)
+	at com.silabs.ss.framework.project.api.core.engine.operations.AddLibraryFileSettingOperation.executeProcess(AddLibraryFileSettingOperation.java:51)
+	at com.silabs.ss.framework.project.internal.core.engine.ProjectModelEngine.queueProjectOperations(ProjectModelEngine.java:805)
+	at com.silabs.ss.framework.project.internal.core.engine.ProjectModelEngine.applyProjectOperations(ProjectModelEngine.java:772)
+	at com.silabs.ss.framework.project.api.core.templates.ProjectModelTemplate.executeTemplateProcesses(ProjectModelTemplate.java:410)
+	at com.silabs.ss.framework.ide.api.project.sls.core.creator.BaseCreateConvertProjectHandler.workOnProject(BaseCreateConvertProjectHandler.java:216)
+	at com.silabs.ss.framework.ide.api.project.sls.core.creator.BaseCreateConvertProjectHandler.createOrConvertProject(BaseCreateConvertProjectHandler.java:287)
+	at ... extra clipped....(Unknown Source)
+
+!ENTRY org.eclipse.cdt.core 1 0 2019-09-21 09:40:47.347
+!MESSAGE Indexed 'SensorPIR_2' (41 sources, 202 headers) in 8.71 sec: 36,875 declarations; 46,697 references; 0 unresolved inclusions; 12 syntax errors; 2 unresolved names (0.0024%)
+
+!ENTRY org.eclipse.cdt.codan.core 4 1 2019-09-21 09:44:08.684
+!MESSAGE Internal Error
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException: Resource '/SensorPIR/ZAF_CommandClasses_MultiChan/CC_MultiChan.c' does not exist.
+	at org.eclipse.core.internal.resources.Resource.checkExists(Resource.java:334)
+	at org.eclipse.core.internal.resources.Resource.checkAccessible(Resource.java:208)
+	at org.eclipse.core.internal.resources.Resource.createMarker(Resource.java:715)
+	at org.eclipse.cdt.codan.internal.core.model.CodanProblemMarker.createMarker(CodanProblemMarker.java:80)
+	at org.eclipse.cdt.codan.internal.core.model.CodanMarkerProblemReporter$2.run(CodanMarkerProblemReporter.java:199)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2241)
+	at org.eclipse.cdt.codan.internal.core.model.CodanMarkerProblemReporter.reconcileMarkers(CodanMarkerProblemReporter.java:185)
+	at org.eclipse.cdt.codan.internal.core.model.CodanMarkerProblemReporter.done(CodanMarkerProblemReporter.java:177)
+	at org.eclipse.cdt.codan.core.model.AbstractChecker.after(AbstractChecker.java:225)
+	at org.eclipse.cdt.codan.internal.core.CodanRunner.processResource(CodanRunner.java:101)
+	at org.eclipse.cdt.codan.internal.core.CodanRunner.runInEditor(CodanRunner.java:46)
+	at org.eclipse.cdt.codan.internal.core.CodanBuilder.processResource(CodanBuilder.java:126)
+	at org.eclipse.cdt.codan.core.cxx.internal.model.CxxCodanReconciler.reconciledAst(CxxCodanReconciler.java:37)
+	at org.eclipse.cdt.codan.internal.ui.cxx.CodanCReconciler.reconciled(CodanCReconciler.java:57)
+	at org.eclipse.cdt.internal.ui.editor.CEditor.reconciled(CEditor.java:3086)
+	at org.eclipse.cdt.internal.ui.text.CReconcilingStrategy.reconcile(CReconcilingStrategy.java:99)
+	at org.eclipse.cdt.internal.ui.text.CReconcilingStrategy.reconcile(CReconcilingStrategy.java:63)
+	at org.eclipse.cdt.internal.ui.text.CompositeReconcilingStrategy.reconcile(CompositeReconcilingStrategy.java:87)
+	at org.eclipse.cdt.internal.ui.text.CCompositeReconcilingStrategy.reconcile(CCompositeReconcilingStrategy.java:90)
+	at org.eclipse.jface.text.reconciler.MonoReconciler.process(MonoReconciler.java:77)
+	at org.eclipse.cdt.internal.ui.text.CReconciler.process(CReconciler.java:349)
+	at org.eclipse.jface.text.reconciler.AbstractReconciler$BackgroundThread.run(AbstractReconciler.java:206)
+!SUBENTRY 1 org.eclipse.core.resources 4 368 2019-09-21 09:44:08.685
+!MESSAGE Resource '/SensorPIR/ZAF_CommandClasses_MultiChan/CC_MultiChan.c' does not exist.
